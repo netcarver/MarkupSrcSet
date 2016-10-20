@@ -39,9 +39,9 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         );
     }
 
+
     /**
      * Default configuration for module
-     *
      */
     static public function getDefaultData() {
         return array(
@@ -52,6 +52,7 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
             "useSrcSetAttr"    => 0
         );
     }
+
 
     public function __toString() {
         return __CLASS__;
@@ -100,6 +101,7 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
     public function getBgSet(HookEvent $event) {
         $event->return = $this->getSrcSetMarkup($event->object, $event->arguments, 'bgset');
     }
+
 
     /**
      * Generates srcset or bgset markup.
@@ -198,6 +200,7 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         return $markup;
     }
 
+
     /** Get responsive image sizes by name from config data.
      *
      * @param $sizeName
@@ -293,6 +296,7 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         $config->imageSets = $configImageSets;
     }
 
+
     /**
      * Append lazysizes JavaScript assets to document body.
      *
@@ -319,6 +323,7 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
 
         $event->return = str_replace("</body>", '<script src="' . $baseUrl . '/markupsrcset.min.js" async></script></body>', $event->return);
     }
+
 
     /**
      * Return an InputfieldWrapper of Inputfields used to configure the class
