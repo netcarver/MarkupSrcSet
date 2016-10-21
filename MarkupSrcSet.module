@@ -392,7 +392,7 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         $fieldName = 'inlineTranspSrc';
         $f = wire('modules')->get("InputfieldCheckbox");
         $f->attr('name', $fieldName);
-        $f->label = __('Use small, inline, transparent image as the src attribute', __FILE__);
+        $f->label = __('Use a small, inline, transparent image as the src attribute', __FILE__);
         $f->notes = __('When checked, the src attribute will be an inline, transparent gif image', __FILE__);
         $f->attr('checked', (isset($data[$fieldName]) && $data[$fieldName] == '1') ? 'checked' : '');
         $f->columnWidth = 100;
