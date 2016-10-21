@@ -193,3 +193,10 @@ Check to add "srcset" tag on images instead of "data-srcset". This allows native
 Note that you need to make sure the "lazyload" class is not added to the markup because the lazysizes JavaScript will block loading these images.
 
 Also note that "data-bgset" will not become "bgset" because there is no native support for that. If you use bgset in your code, make sure you load the required JavaScript files to make them work.
+
+
+### Use Inline Src Image
+
+Check this option if you want to use a tiny inline gif as the src image. The lazyloader (if enabled) will take care of
+replacing this with a suitable image from the source set. Obviously, you shouldn't use this if you care about browsers
+that have javascript disabled.
