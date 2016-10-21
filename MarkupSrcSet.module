@@ -20,6 +20,7 @@
  */
 class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
 
+    const InlineBlank = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
     public $configData;
 
     /**
@@ -49,7 +50,8 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
             "imageSets"        => '',
             "addLazyloadClass" => 1,
             "loadScripts"      => 1,
-            "useSrcSetAttr"    => 0
+            "useSrcSetAttr"    => 0,
+            "inlineTranspSrc"  => 0,
         );
     }
 
@@ -119,8 +121,6 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         $srcSetTag = "data-srcset";
         $sizesTag = "data-sizes";
 
-        $classes = null;
-
         // get passed classes
         if (isset($args[1]) && $args[1] !== false && $args[1] !== "") {
             $classes = $args[1];
@@ -169,9 +169,13 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         $needFallbackImage = (stripos($flags, 'noFallbackImage') === false);
 
         if ($needFallbackImage) {
-            $fallbackImg = reset($sizeArray);
-            $fallbackImg = $img->size($fallbackImg[0], $fallbackImg[1], $pwImageResizeOptions);
-            $fallbackImgSrc = $fallbackImg->url;
+            if ($this->configData['inlineTranspSrc']) {
+                $fallbackImgSrc = MarkupSrcSet::InlineBlank;
+            } else {
+                $fallbackImg = reset($sizeArray);
+                $fallbackImg = $img->size($fallbackImg[0], $fallbackImg[1], $pwImageResizeOptions);
+                $fallbackImgSrc = $fallbackImg->url;
+            }
         }
 
         if ($mode === 'srcset') {
@@ -383,6 +387,15 @@ class MarkupSrcSet extends WireData implements Module, ConfigurableModule {
         $f->notes = __('Check to add "srcset" tag on images instead of "data-srcset". This allows native srcset functionality in supported browsers.', __FILE__);
         $f->attr('checked', (isset($data[$fieldName]) && $data[$fieldName] == '1') ? 'checked' : '');
         $f->columnWidth = 34;
+        $wrapper->add($f);
+
+        $fieldName = 'inlineTranspSrc';
+        $f = wire('modules')->get("InputfieldCheckbox");
+        $f->attr('name', $fieldName);
+        $f->label = __('Use small, inline, transparent image as the src attribute', __FILE__);
+        $f->notes = __('When checked, the src attribute will be an inline, transparent gif image', __FILE__);
+        $f->attr('checked', (isset($data[$fieldName]) && $data[$fieldName] == '1') ? 'checked' : '');
+        $f->columnWidth = 100;
         $wrapper->add($f);
 
         return $wrapper;
